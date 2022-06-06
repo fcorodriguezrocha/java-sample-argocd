@@ -1,55 +1,11 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  annotations:
-    openshift.io/host.generated: "true"
-  creationTimestamp: "2022-06-06T10:09:37Z"
   labels:
     app: openshift-quickstarts
-    app.kubernetes.io/component: openshift-quickstarts
-    app.kubernetes.io/instance: openshift-quickstarts
-    app.kubernetes.io/name: openshift-quickstarts
-    app.kubernetes.io/part-of: openshift-quickstarts-app
-    app.openshift.io/runtime: java
-    app.openshift.io/runtime-version: openjdk-11-ubi8
-  managedFields:
-  - apiVersion: route.openshift.io/v1
-    fieldsType: FieldsV1
-    fieldsV1:
-      f:metadata:
-        f:labels:
-          .: {}
-          f:app: {}
-          f:app.kubernetes.io/component: {}
-          f:app.kubernetes.io/instance: {}
-          f:app.kubernetes.io/name: {}
-          f:app.kubernetes.io/part-of: {}
-          f:app.openshift.io/runtime: {}
-          f:app.openshift.io/runtime-version: {}
-      f:spec:
-        f:port:
-          .: {}
-          f:targetPort: {}
-        f:to:
-          f:kind: {}
-          f:name: {}
-          f:weight: {}
-        f:wildcardPolicy: {}
-    manager: Mozilla
-    operation: Update
-    time: "2022-06-06T10:09:37Z"
-  - apiVersion: route.openshift.io/v1
-    fieldsType: FieldsV1
-    fieldsV1:
-      f:status:
-        f:ingress: {}
-    manager: openshift-router
-    operation: Update
-    time: "2022-06-06T10:09:37Z"
   name: openshift-quickstarts
   namespace: lantik-java-sample
-  resourceVersion: "758672489"
-  uid: f9e5487b-c6f4-4a48-8e9a-aefadb275ad2
+  resourceVersion: "758757263"
 spec:
   host: openshift-quickstarts-lantik-java-sample.apps.ocpdesa.aldundia.bfa
   port:
@@ -59,13 +15,3 @@ spec:
     name: openshift-quickstarts
     weight: 100
   wildcardPolicy: None
-status:
-  ingress:
-  - conditions:
-    - lastTransitionTime: "2022-06-06T10:09:37Z"
-      status: "True"
-      type: Admitted
-    host: openshift-quickstarts-lantik-java-sample.apps.ocpdesa.aldundia.bfa
-    routerCanonicalHostname: router-default.apps.ocpdesa.aldundia.bfa
-    routerName: default
-    wildcardPolicy: None
