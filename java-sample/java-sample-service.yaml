@@ -6,9 +6,6 @@ metadata:
   name: openshift-quickstarts
   namespace: lantik-java-sample
 spec:
-  clusterIP: 10.222.228.54
-  clusterIPs:
-  - 10.222.228.54
   ipFamilies:
   - IPv4
   ipFamilyPolicy: SingleStack
@@ -27,6 +24,5 @@ spec:
     targetPort: 8778
   selector:
     app: openshift-quickstarts
-    deploymentconfig: openshift-quickstarts
   sessionAffinity: None
   type: ClusterIP
