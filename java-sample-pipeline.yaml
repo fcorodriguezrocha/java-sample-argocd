@@ -1,0 +1,101 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  creationTimestamp: "2022-06-06T10:09:36Z"
+  generation: 1
+  labels:
+    app.kubernetes.io/instance: openshift-quickstarts
+    app.kubernetes.io/name: openshift-quickstarts
+    pipeline.openshift.io/runtime: java
+    pipeline.openshift.io/runtime-version: openjdk-11-ubi8
+    pipeline.openshift.io/type: kubernetes
+  managedFields:
+  - apiVersion: tekton.dev/v1beta1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:labels:
+          .: {}
+          f:app.kubernetes.io/instance: {}
+          f:app.kubernetes.io/name: {}
+          f:pipeline.openshift.io/runtime: {}
+          f:pipeline.openshift.io/runtime-version: {}
+          f:pipeline.openshift.io/type: {}
+      f:spec:
+        .: {}
+        f:params: {}
+        f:tasks: {}
+        f:workspaces: {}
+    manager: Mozilla
+    operation: Update
+    time: "2022-06-06T10:09:36Z"
+  name: openshift-quickstarts
+  namespace: lantik-java-sample
+  resourceVersion: "758672420"
+  uid: dd1a9f7d-0bec-45c0-a0e5-c4bd0e00613b
+spec:
+  params:
+  - default: openshift-quickstarts
+    name: APP_NAME
+    type: string
+  - default: https://github.com/jboss-openshift/openshift-quickstarts
+    name: GIT_REPO
+    type: string
+  - default: master
+    name: GIT_REVISION
+    type: string
+  - default: image-registry.openshift-image-registry.svc:5000/lantik-java-sample/openshift-quickstarts
+    name: IMAGE_NAME
+    type: string
+  - default: undertow-servlet
+    name: PATH_CONTEXT
+    type: string
+  - default: openjdk-11-ubi8
+    name: VERSION
+    type: string
+  tasks:
+  - name: fetch-repository
+    params:
+    - name: url
+      value: $(params.GIT_REPO)
+    - name: revision
+      value: $(params.GIT_REVISION)
+    - name: subdirectory
+      value: ""
+    - name: deleteExisting
+      value: "true"
+    taskRef:
+      kind: ClusterTask
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: workspace
+  - name: build
+    params:
+    - name: IMAGE
+      value: $(params.IMAGE_NAME)
+    - name: TLSVERIFY
+      value: "false"
+    - name: PATH_CONTEXT
+      value: $(params.PATH_CONTEXT)
+    - name: VERSION
+      value: $(params.VERSION)
+    runAfter:
+    - fetch-repository
+    taskRef:
+      kind: ClusterTask
+      name: s2i-java
+    workspaces:
+    - name: source
+      workspace: workspace
+  - name: deploy
+    params:
+    - name: SCRIPT
+      value: oc rollout status deploy/$(params.APP_NAME)
+    runAfter:
+    - build
+    taskRef:
+      kind: ClusterTask
+      name: openshift-client
+  workspaces:
+  - name: workspace
